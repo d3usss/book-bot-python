@@ -1,24 +1,32 @@
+import sys
+
 def main():
-    with open("books/frankenstein.txt") as f:
-        file_contents = f.read()
+    try:
+        input_path = input("Enter the path to the book file you would like to analyze: ")
+        book_file = get_file_contents(input_path)
+    
+    except FileNotFoundError:
+        print("The file you entered could not be found.")
+        sys.exit(1)
         
     print(f"--- Begin report of books/frankenstein.txt ---")
-    print(f"{count_words(file_contents)} words found in the document")
+    print(f"{count_words(book_file)} words found in the document")
     print("\n")
     
-    letters = count_letters(file_contents)
+    letters = count_letters(book_file)
     
     for key, value in letters.items():
         print_letter_count(key, value)
     
+    print("\n")
     print("--- End report ---")
         
-def count_words(file_contents):
-    words = file_contents.split()
+def count_words(book_file):
+    words = book_file.split()
     return len(words)
 
-def count_letters(file_contents):
-    lowered_file_contents = file_contents.lower()
+def count_letters(book_file):
+    lowered_file_contents = book_file.lower()
     return {
         "a": lowered_file_contents.count("a"),
         "b": lowered_file_contents.count("b"),
@@ -50,5 +58,10 @@ def count_letters(file_contents):
 
 def print_letter_count(letter, count):
     print(f"The '{letter}' character was found {count} times")
+    
+def get_file_contents(file_path):
+    with open(file_path) as f:
+        file_contents = f.read()
+    return file_contents
         
 main()
